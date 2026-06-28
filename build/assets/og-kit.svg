@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FAF6EE"/>
+      <stop offset="100%" stop-color="#F1ECE0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g transform="translate(80,80)">
+    <text x="0" y="0" font-family="Inter,system-ui,sans-serif" font-size="20" font-weight="700" letter-spacing="2" fill="#BE4F33">KAIRIKOS · KSKIT #01</text>
+    <text x="0" y="130" font-family="Inter,system-ui,sans-serif" font-size="76" font-weight="700" fill="#14181F">El kit del salón</text>
+    <text x="0" y="220" font-family="Instrument Serif,Georgia,serif" font-size="86" font-style="italic" fill="#BE4F33">automatizado: gratis</text>
+    <text x="0" y="320" font-family="Inter,system-ui,sans-serif" font-size="28" fill="#4A4F58">5 plantillas de WhatsApp · 1 guión IA · 1 calculadora</text>
+    <text x="0" y="360" font-family="Inter,system-ui,sans-serif" font-size="24" fill="#4A4F58">PDF · 12 páginas · Descarga inmediata</text>
+  </g>
+  <g transform="translate(900,140)">
+    <rect x="0" y="40" width="200" height="280" rx="6" fill="#FFFFFF" stroke="#E5DED1" transform="rotate(4 100 180)"/>
+    <rect x="20" y="0" width="200" height="320" rx="6" fill="#14181F"/>
+    <text x="40" y="32" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="700" letter-spacing="1" fill="#BE4F33">KAIRIKOS</text>
+    <text x="40" y="170" font-family="Instrument Serif,Georgia,serif" font-size="30" fill="#FFFFFF">El kit del salón</text>
+    <text x="40" y="205" font-family="Instrument Serif,Georgia,serif" font-size="30" fill="#FFFFFF">automatizado</text>
+    <text x="40" y="290" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="600" letter-spacing="1" fill="rgba(255,255,255,0.5)">PDF · 12 PÁGINAS</text>
+  </g>
+</svg>

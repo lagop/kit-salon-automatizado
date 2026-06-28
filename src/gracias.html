@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#BE4F33" />
+  <title>¡Ya está! Revisa tu email — Kairikos</title>
+  <meta name="description" content="Te hemos enviado el kit del salón automatizado. Revisa tu bandeja de entrada y, si quieres, descubre Kira Studio." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://kairikos.com/kit/gracias/" />
+
+  <meta property="og:title" content="¡Ya está! Revisa tu email — Kairikos" />
+  <meta property="og:description" content="Tu PDF ya está en camino. Descubre Kira Studio mientras tanto." />
+  <meta property="og:url" content="https://kairikos.com/kit/gracias/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/assets/css/kit.css" />
+</head>
+<body class="kit-body--thanks">
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <main class="kit-thanks" id="main">
+    <div class="kit-thanks__inner">
+      <p class="kit-eyebrow kit-eyebrow--center"><span aria-hidden="true">📬</span> Enviado</p>
+      <h1 class="kit-thanks__title">¡Ya está! Revisa tu email</h1>
+      <p class="kit-thanks__sub" id="thx-sub">
+        Te hemos enviado <strong>“El kit del salón automatizado”</strong>. Si no lo ves en 2 minutos, revisa la carpeta de spam o promévenos a remitente seguro.
+      </p>
+
+      <div class="kit-thanks__card">
+        <h2>Mientras tanto…</h2>
+        <p>
+          ¿Quieres ver cómo un chatbot de WhatsApp puede llenar tu agenda mientras tú trabajas?
+        </p>
+        <a class="kit-cta kit-cta--primary" href="https://kairikos.com/peluquerias/" rel="noopener">
+          Solicitar demo gratuita
+          <span class="kit-cta__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <a class="kit-thanks__back" href="https://kairikos.com/" rel="noopener">← Volver a kairikos.com</a>
+    </div>
+  </main>
+
+  <footer class="kit-foot">
+    <div class="kit-foot__inner">
+      <span class="kit-foot__brand">Kairikos — Web + IA para pymes</span>
+      <span class="kit-foot__links">
+        <a href="https://kairikos.com/" rel="noopener">kairikos.com</a>
+      </span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var email = params.get('email');
+      var sub = document.getElementById('thx-sub');
+      if (email && sub) {
+        sub.innerHTML = 'Te hemos enviado <strong>“El kit del salón automatizado”</strong> a <strong>' +
+          email.replace(/[<>]/g, '') + '</strong>. Si no lo ves en 2 minutos, revisa spam.';
+      }
+    })();
+  </script>
+</body>
+</html>

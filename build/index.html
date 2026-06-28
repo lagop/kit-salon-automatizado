@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#BE4F33" />
+  <title>El kit del salón automatizado: gratis — Kairikos</title>
+  <meta name="description" content="5 plantillas de WhatsApp, un guión de recepción IA y una calculadora de no-shows para que tu salón deje de perder clientes. PDF gratis en 1 minuto." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+
+  <link rel="canonical" href="https://kairikos.com/kit/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:site_name" content="Kairikos" />
+  <meta property="og:title" content="El kit del salón automatizado: gratis — Kairikos" />
+  <meta property="og:description" content="5 plantillas de WhatsApp, un guión de recepción IA y una calculadora de no-shows. PDF gratis en 1 minuto." />
+  <meta property="og:url" content="https://kairikos.com/kit/" />
+  <meta property="og:image" content="https://kairikos.com/kit/assets/og-kit.svg" />
+  <meta property="og:image:type" content="image/svg+xml" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="El kit del salón automatizado: gratis — Kairikos" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="El kit del salón automatizado: gratis" />
+  <meta name="twitter:description" content="5 plantillas de WhatsApp, un guión IA y una calculadora de no-shows. PDF gratis en 1 minuto." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/assets/css/kit.css" />
+</head>
+<body>
+  <a class="skip-link" href="#form">Saltar al formulario</a>
+
+  <main class="kit">
+    <section class="kit-hero" aria-labelledby="hero-title">
+      <div class="kit-hero__inner">
+        <div class="kit-hero__copy">
+          <p class="kit-eyebrow"><span aria-hidden="true">✦</span> Kairikos · KSKit #01</p>
+          <h1 id="hero-title" class="kit-hero__title">
+            El kit del salón automatizado: <em>gratis</em>
+          </h1>
+          <p class="kit-hero__sub">
+            5 plantillas de WhatsApp, un guión de recepción IA y una calculadora de no-shows para que tu salón deje de perder clientes. Descárgalo en 1 minuto.
+          </p>
+          <ul class="kit-hero__bullets" aria-label="Qué incluye el kit">
+            <li><strong>5 plantillas de WhatsApp</strong> listas para copiar y pegar.</li>
+            <li><strong>Guión de recepción IA</strong> paso a paso, sin tecnicismos.</li>
+            <li><strong>Calculadora de no-shows</strong> para saber cuánto pierdes al año.</li>
+          </ul>
+          <a class="kit-cta kit-cta--primary" href="#form">
+            Descargar gratis ahora
+            <span class="kit-cta__arrow" aria-hidden="true">↓</span>
+          </a>
+          <p class="kit-trust">Sin spam. Cancelas cuando quieras.</p>
+        </div>
+
+        <aside class="kit-hero__art" aria-hidden="true">
+          <div class="kit-mock">
+            <div class="kit-mock__page kit-mock__page--1">
+              <span class="kit-mock__heading">Recordatorio 24h</span>
+              <span class="kit-mock__line"></span>
+              <span class="kit-mock__line kit-mock__line--short"></span>
+              <span class="kit-mock__line"></span>
+              <span class="kit-mock__line kit-mock__line--short"></span>
+            </div>
+            <div class="kit-mock__cover">
+              <span class="kit-mock__brand">Kairikos</span>
+              <span class="kit-mock__title">El kit del salón<br />automatizado</span>
+              <span class="kit-mock__sub">5 plantillas · 1 guión IA · 1 calculadora</span>
+              <span class="kit-mock__tag">PDF · 12 páginas</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="kit-form" id="form" aria-labelledby="form-title">
+      <div class="kit-form__inner">
+        <h2 id="form-title" class="kit-form__title">Descarga el kit ahora</h2>
+        <p class="kit-form__sub">Te enviamos el PDF al email y, si quieres, una demo de Kira Studio.</p>
+
+        <!--
+          INTEGRATION HOOK: el <form> está listo para MailerLite embedded form
+          o para un endpoint propio. Por defecto hace POST a /api/lead (configurable
+          vía data-endpoint). En esta build el JS intercepta el submit y muestra
+          la página de gracias; la integración real con MailerLite vive en
+          KAIA-647 (ver docs/handoff-mailerlite.md).
+        -->
+        <form
+          class="kit-form__el"
+          id="lead-form"
+          data-endpoint="/api/lead"
+          novalidate
+        >
+          <div class="kit-field">
+            <label for="lead-name">Tu nombre</label>
+            <input
+              id="lead-name"
+              name="name"
+              type="text"
+              autocomplete="given-name"
+              required
+              placeholder="María"
+              aria-required="true"
+            />
+          </div>
+          <div class="kit-field">
+            <label for="lead-email">Email profesional</label>
+            <input
+              id="lead-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              placeholder="maria@misalon.es"
+              aria-required="true"
+            />
+          </div>
+          <div class="kit-field">
+            <label for="lead-salon">Nombre de tu salón</label>
+            <input
+              id="lead-salon"
+              name="salon"
+              type="text"
+              autocomplete="organization"
+              required
+              placeholder="Salón María"
+              aria-required="true"
+            />
+          </div>
+          <button type="submit" class="kit-cta kit-cta--primary kit-cta--block">
+            <span class="kit-cta__label">Descargar el kit ahora</span>
+            <span class="kit-cta__spinner" aria-hidden="true"></span>
+          </button>
+          <p class="kit-form__legal">
+            Al enviar aceptas recibir el PDF y emails puntuales de Kairikos.
+            <a href="https://kairikos.com/aviso-legal/" rel="noopener">Aviso legal</a>
+            ·
+            <a href="https://kairikos.com/politica-de-privacidad/" rel="noopener">Privacidad</a>
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <section class="kit-faq" aria-labelledby="faq-title">
+      <h2 id="faq-title" class="kit-faq__title">Preguntas frecuentes</h2>
+      <div class="kit-faq__grid">
+        <details>
+          <summary>¿Cuánto tarda en llegarme el PDF?</summary>
+          <p>Lo recibes en menos de 2 minutos tras enviar el formulario. Si no aparece, revisa la carpeta de spam o promévenos a remitente seguro.</p>
+        </details>
+        <details>
+          <summary>¿Qué pasa con mis datos?</summary>
+          <p>Guardamos tu email para enviarte el kit y, si más adelante quieres, una demo de Kira Studio. Nunca vendemos ni compartimos tus datos. Cancelas cuando quieras.</p>
+        </details>
+        <details>
+          <summary>¿Necesito conocimientos técnicos?</summary>
+          <p>No. Las plantillas están escritas en lenguaje natural, listas para copiar y pegar en WhatsApp Business. El guión IA se configura en 30 minutos sin instalar nada.</p>
+        </details>
+        <details>
+          <summary>¿Y si quiero más automatización?</summary>
+          <p>Kira Studio es el siguiente paso: citas online 24/7, recordatorios automáticos, bot con IA y panel en español. Desde 49 €/mes + IVA, sin permanencia.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="kit-foot">
+    <div class="kit-foot__inner">
+      <span class="kit-foot__brand">Kairikos — Web + IA para pymes</span>
+      <span class="kit-foot__links">
+        <a href="https://kairikos.com/" rel="noopener">kairikos.com</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://kairikos.com/peluquerias/" rel="noopener">Software para peluquerías</a>
+      </span>
+    </div>
+  </footer>
+
+  <script src="/assets/js/kit.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>El kit del salón automatizado · Kairikos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Noto+Color+Emoji&display=swap" rel="stylesheet" />
+<style>
+  /* ---------------------------------------------------------------
+     Brand tokens — KAIA-436 §"Configuración técnica"
+     --------------------------------------------------------------- */
+  :root {
+    --terracotta: #BE4F33;
+    --terracotta-d: #9E4028;
+    --terracotta-soft: #E8B8A9;
+    --bg-bone: #FAF6EE;
+    --bg-paper: #F1ECE0;
+    --bg-cream: #F6F0E3;
+    --ink: #14181F;
+    --ink-soft: #4A4F58;
+    --ink-mute: #7A7367;
+    --border: #E5DED1;
+    --rule: #CFC6B3;
+    --shadow-card: 0 1px 0 rgba(20,24,31,0.04), 0 8px 24px -16px rgba(190,79,51,0.18);
+  }
+
+  /* ---------------------------------------------------------------
+     Page setup — A4, no browser margin, full-bleed backgrounds
+     --------------------------------------------------------------- */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Noto Color Emoji', sans-serif;
+    font-size: 10pt;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--bg-bone);
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ---------------------------------------------------------------
+     Page wrapper — uses CSS Paged Media for actual pagination.
+     We give each logical page a hard height so the layout is
+     stable, and overflow:hidden so anything past A4 is clipped
+     cleanly instead of bleeding into the next page.
+     --------------------------------------------------------------- */
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    max-height: 297mm;
+    height: 297mm;
+    page-break-after: always;
+    page-break-inside: avoid;
+    break-after: page;
+    break-inside: avoid;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-bone);
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  .page > .pad { overflow: hidden; }
+
+  .pad {
+    padding: 18mm 16mm 18mm 16mm;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* ---------------------------------------------------------------
+     Page chrome — header band + footer band, baked into each
+     page using absolute positioning. The CSS `counter(page)` /
+     `counter(pages)` mechanism is not honoured by Chromium for
+     regular DOM elements (only for its own headerTemplate /
+     footerTemplate injection, which we don't use here), so the
+     footer shows just the canonical URL and the page-section
+     label; page count sits in the top-right of the header band.
+     --------------------------------------------------------------- */
+  .page-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 8mm 16mm 5mm 16mm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 8pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .page-header .brand {
+    color: var(--terracotta);
+    font-weight: 700;
+  }
+  .page-header .brand-mark {
+    display: inline-block;
+    width: 14px; height: 14px;
+    margin-right: 8px;
+    vertical-align: -2px;
+    border-radius: 3px;
+    background: var(--terracotta);
+  }
+
+  .page-footer {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 5mm 16mm 8mm 16mm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 7.5pt;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+  }
+  .page-footer .url { color: var(--terracotta); }
+
+  .rule {
+    height: 1px;
+    background: var(--rule);
+    margin: 0;
+    border: 0;
+  }
+  .rule-short {
+    width: 36px; height: 3px;
+    background: var(--terracotta);
+    border: 0;
+    margin: 0 0 8mm 0;
+  }
+
+  /* ---------------------------------------------------------------
+     Type scale
+     --------------------------------------------------------------- */
+  h1.display {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 44pt;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 6mm 0;
+  }
+  h1.section {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 22pt;
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0 0 4mm 0;
+  }
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 12pt;
+    line-height: 1.35;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    margin: 5mm 0 2mm 0;
+  }
+  h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 10.5pt;
+    line-height: 1.4;
+    color: var(--ink);
+    margin: 4mm 0 1.5mm 0;
+  }
+  p {
+    margin: 0 0 3mm 0;
+    color: var(--ink);
+  }
+  p.lede {
+    font-size: 11pt;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  strong { color: var(--ink); font-weight: 700; }
+  em { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; }
+  ul, ol { padding-left: 5mm; margin: 0 0 3mm 0; }
+  li { margin-bottom: 1.2mm; }
+  code, pre {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 9pt;
+  }
+  pre {
+    background: var(--bg-paper);
+    border-left: 3px solid var(--terracotta);
+    padding: 3mm 3.5mm;
+    margin: 2mm 0 3mm 0;
+    white-space: pre-wrap;
+    line-height: 1.45;
+    color: var(--ink);
+    border-radius: 2px;
+    font-family: 'Inter', 'Noto Color Emoji', system-ui, sans-serif;
+    font-size: 9pt;
+  }
+  blockquote {
+    margin: 3mm 0 4mm 0;
+    padding: 3mm 5mm;
+    border-left: 3px solid var(--terracotta-soft);
+    background: var(--bg-cream);
+    color: var(--ink);
+    font-style: italic;
+    font-size: 10pt;
+    border-radius: 0 2px 2px 0;
+  }
+  blockquote p { margin: 0; }
+
+  /* Tables — used on page 3 ("cómo usar") and page 7 (calculadora) */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 3mm 0 4mm 0;
+    font-size: 9.5pt;
+  }
+  th, td {
+    text-align: left;
+    padding: 2.5mm 3mm;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    background: var(--bg-paper);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 8.5pt;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  tr:last-child td { border-bottom: 1px solid var(--rule); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* Kicker */
+  .kicker {
+    display: inline-block;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 4mm;
+  }
+
+  /* ---------------------------------------------------------------
+     Cover (page 1)
+     --------------------------------------------------------------- */
+  .cover {
+    background: var(--bg-bone);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover .pad { padding: 24mm 22mm; }
+  .cover .top {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .cover .brand {
+    font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    font-size: 9pt; color: var(--terracotta);
+  }
+  .cover .badge {
+    font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute);
+    border: 1px solid var(--rule);
+    padding: 2mm 4mm;
+    border-radius: 999px;
+  }
+  .cover .hero h1.display { font-size: 50pt; margin-bottom: 6mm; }
+  .cover .lede {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 13pt;
+    line-height: 1.45;
+    color: var(--ink);
+    max-width: 150mm;
+    margin-bottom: 10mm;
+  }
+  .cover .cta-row {
+    display: flex; gap: 4mm; align-items: center;
+    margin-top: 6mm;
+  }
+  .cover .cta {
+    display: inline-block;
+    background: var(--terracotta);
+    color: #fff;
+    padding: 3.5mm 6mm;
+    font-weight: 600;
+    font-size: 9.5pt;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border-radius: 2px;
+  }
+  .cover .meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4mm 8mm;
+    font-size: 9pt;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--rule);
+    padding-top: 5mm;
+    margin-top: 8mm;
+  }
+  .cover .meta div strong { display: block; color: var(--ink); font-weight: 600; margin-bottom: 1mm; }
+  .cover .ornament {
+    height: 4mm;
+    width: 36mm;
+    background: var(--terracotta);
+    margin: 0 0 6mm 0;
+  }
+
+  /* ---------------------------------------------------------------
+     Section opener (pages that start a section)
+     --------------------------------------------------------------- */
+  .section-open { padding-top: 13mm; }
+
+  /* ---------------------------------------------------------------
+     Card for plantillas (pages 4-5)
+     --------------------------------------------------------------- */
+  .plantilla {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--terracotta);
+    background: #fff;
+    padding: 3mm 4mm;
+    margin: 1.5mm 0 3mm 0;
+    border-radius: 2px;
+    box-shadow: var(--shadow-card);
+    break-inside: avoid;
+  }
+  .plantilla .num {
+    font-size: 7pt; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--terracotta); font-weight: 700; margin-bottom: 0.5mm;
+  }
+  .plantilla h3 { margin-top: 0; font-size: 10.5pt; margin-bottom: 0.5mm; line-height: 1.25; }
+  .plantilla pre { margin-top: 1mm; padding: 2.5mm 3mm; font-size: 8pt; line-height: 1.4; }
+  .plantilla p.small { margin-bottom: 0.5mm; font-size: 8pt; line-height: 1.4; }
+
+  /* Highlight box (used in cierre) */
+  .hl {
+    background: var(--bg-paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 5mm 6mm;
+    margin: 4mm 0;
+  }
+
+  /* Closing CTA card */
+  .cta-card {
+    background: var(--ink);
+    color: var(--bg-bone);
+    border-radius: 4px;
+    padding: 6mm 7mm;
+    margin-top: 6mm;
+  }
+  .cta-card .kicker { color: var(--terracotta-soft); }
+  .cta-card h3 { color: #fff; font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; font-size: 17pt; line-height: 1.25; margin: 0 0 3mm 0; }
+  .cta-card p { color: rgba(250,246,238,0.85); font-size: 9.5pt; line-height: 1.55; margin: 0 0 4mm 0; }
+  .cta-card .cta {
+    background: var(--terracotta); color: #fff; padding: 3.5mm 6mm;
+    display: inline-block; font-weight: 600; font-size: 9.5pt;
+    text-decoration: none; border-radius: 2px;
+  }
+  .cta-card .secondary { color: rgba(250,246,238,0.7); font-size: 8.5pt; margin-top: 3mm; }
+
+  /* Utility */
+  .muted { color: var(--ink-mute); }
+  .small { font-size: 8.5pt; }
+  .center { text-align: center; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5mm; }
+
+  /* page 5 plantilla layout — split two columns of 3 templates */
+  .split-2 {
+    column-count: 2;
+    column-gap: 6mm;
+    column-rule: 0;
+  }
+  .split-2 .plantilla { break-inside: avoid; }
+
+  /* Bot flow (page 6) — numbered steps with rule */
+  .flow-step {
+    display: grid;
+    grid-template-columns: 9mm 1fr;
+    gap: 3mm;
+    margin-bottom: 2.5mm;
+    break-inside: avoid;
+    align-items: start;
+  }
+  .flow-step .step-num {
+    background: var(--terracotta);
+    color: #fff;
+    width: 7mm; height: 7mm;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-weight: 700; font-size: 8.5pt;
+    margin-top: 0.5mm;
+  }
+  .flow-step h4 {
+    margin: 0 0 1mm 0; font-size: 9.5pt; font-weight: 700; color: var(--ink);
+  }
+  .flow-step pre { margin: 1mm 0 0 0; padding: 3mm 3mm; font-size: 8.5pt; line-height: 1.45; }
+
+  /* Numbers big for the calculator */
+  .num-pill {
+    display: inline-block;
+    background: var(--terracotta);
+    color: #fff;
+    padding: 1mm 3mm;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 9pt;
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE 1 · PORTADA
+     ============================================================ -->
+<section class="page cover">
+  <div class="pad" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+    <div>
+      <div class="top">
+        <div class="brand"><span class="brand-mark"></span>Kairikos</div>
+        <div class="badge">Lead magnet · 2026</div>
+      </div>
+      <div style="height:14mm;"></div>
+      <div class="ornament"></div>
+      <h1 class="display">El kit del salón automatizado</h1>
+      <p class="lede">5 plantillas de WhatsApp, un guión de bot de recepción y una calculadora para saber cuánto te están costando las citas vacías.</p>
+      <div class="cta-row">
+        <span class="cta">Reserva una demo gratuita de 20 min</span>
+        <span class="muted small">→ kairikos.com/demo</span>
+      </div>
+    </div>
+    <div>
+      <div class="meta">
+        <div><strong>Tiempo de lectura</strong>12 minutos</div>
+        <div><strong>Idioma</strong>Español de España</div>
+        <div><strong>Público</strong>Dueños y responsables de salones de peluquería y estética</div>
+        <div><strong>Formato</strong>PDF · 8 páginas · imprimible</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 2 · INTRODUCCIÓN
+     ============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <div class="brand"><span class="brand-mark"></span>Kairikos · Kit del salón automatizado</div>
+    <div>Introducción</div>
+  </div>
+  <div class="pad section-open">
+    <div class="kicker">Página 2 · Introducción</div>
+    <hr class="rule-short" />
+    <h1 class="section">Por qué WhatsApp automatizado salva tu salón</h1>
+    <p class="lede">Tres frases que seguro te suenan:</p>
+    <ul>
+      <li><em>"Llevo tres horas contestando WhatsApps y no he tocado las tijeras."</em></li>
+      <li><em>"Tenía 6 citas y han venido 3. He perdido 200 € que no recupero."</em></li>
+      <li><em>"Esta clienta no vuelve desde marzo. No sé cómo decirle sin parecer pesada."</em></li>
+    </ul>
+    <p>No estás solo. Hablamos con decenas de salones en España y estos tres problemas aparecen siempre. El motivo es simple: la agenda del salón se gestiona en la cabeza de la dueña, en un papel o en una app que nadie mira el domingo por la tarde. Y el canal por el que te hablan las clientas es WhatsApp, no tu software.</p>
+    <p>La buena noticia es que <strong>no necesitas un sistema complicado</strong>. Solo necesitas:</p>
+    <ol>
+      <li>Plantillas de mensajes claras para los 5 momentos clave (cita, recordatorio, post-visita, reactivación, recuperación de no-show).</li>
+      <li>Un guión de bot de recepción para contestar cuando tú no puedes.</li>
+      <li>Un número realista de lo que estás perdiendo, para decidir si te compensa cambiar algo.</li>
+    </ol>
+    <p>Las siguientes páginas te lo dan todo hecho. Copia, pega, adapta el nombre del salón y listo.</p>
+    <blockquote>
+      <p>"Si solo aplicas la plantilla 2 (recordatorio 24 h), vas a notar la diferencia en 7 días. El resto es para subir el listón."</p>
+    </blockquote>
+  </div>
+  <div class="page-footer">
+    <div class="url">kairikos.com/kit</div>
+    <div>El kit del salón automatizado · Kairikos 2026</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 3 · CÓMO USAR ESTE KIT
+     ============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <div class="brand"><span class="brand-mark"></span>Kairikos · Kit del salón automatizado</div>
+    <div>Cómo usar este kit</div>
+  </div>
+  <div class="pad section-open">
+    <div class="kicker">Página 3 · Cómo usar este kit</div>
+    <hr class="rule-short" />
+    <h1 class="section">Siete piezas, una agenda llena</h1>
+    <p class="lede">Cada pieza tiene un momento claro para usarla. Empieza por arriba (confirmación y recordatorio) y ve sumando el resto cuando te sientas cómoda.</p>
+    <table>
+      <thead>
+        <tr><th>Pieza</th><th>Cuándo usarla</th><th>Tiempo que te ahorra</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Plantilla 1 · Confirmación</td><td>En cuanto el cliente reserva</td><td>2 min por cita</td></tr>
+        <tr><td>Plantilla 2 · Recordatorio 24h</td><td>El día antes, a las 19:00</td><td>Evita 1 de cada 3 no-shows</td></tr>
+        <tr><td>Plantilla 3 · Post-visita</td><td>2 horas después de la cita</td><td>1 reseña cada 2 visitas</td></tr>
+        <tr><td>Plantilla 4 · Cliente dormido</td><td>A los 60 días sin cita</td><td>1 cliente reactivado por semana</td></tr>
+        <tr><td>Plantilla 5 · No-show</td><td>A las 24h de no venir</td><td>Recupera hasta 6 de cada 10</td></tr>
+        <tr><td>Bot de recepción</td><td>24/7, sin contestar a mano</td><td>1 hora al día</td></tr>
+        <tr><td>Calculadora de no-shows</td><td>Una vez, para ver el agujero</td><td>Decisión con números</td></tr>
+      </tbody>
+    </table>
+    <blockquote>
+      <p><strong>Consejo:</strong> empieza solo por las plantillas 1 y 2. Son las que más dinero te devuelven en menos tiempo. El resto lo sumas cuando te acostumbres.</p>
+    </blockquote>
+    <h2 style="margin-top:6mm;">La regla de oro de cada plantilla</h2>
+    <p>Todas las plantillas siguen la misma regla: <strong>nombre propio, hora exacta, un solo botón de acción</strong>. No uses mayúsculas, no pongas emojis de más, escribe como hablarías en una cafetería. Tu clienta no es un lead frío: es alguien que ya confió en ti para sentarse en tu silla.</p>
+    <p class="muted small">Las plantillas concretas están en las dos páginas siguientes. Están listas para copiar y pegar — solo cambia <code style="font-family:inherit;background:var(--bg-paper);padding:0 2px;border-radius:2px;">{{nombre_del_salón}}</code> por el tuyo.</p>
+  </div>
+  <div class="page-footer">
+    <div class="url">kairikos.com/kit</div>
+    <div>El kit del salón automatizado · Kairikos 2026</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 4 · PLANTILLAS 1, 2
+     ============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <div class="brand"><span class="brand-mark"></span>Kairikos · Kit del salón automatizado</div>
+    <div>Plantillas 1–2</div>
+  </div>
+  <div class="pad section-open">
+    <div class="kicker">Página 4 · Las 5 plantillas (1 de 2)</div>
+    <hr class="rule-short" />
+    <h1 class="section">Los dos mensajes que más dinero devuelven</h1>
+    <p class="lede">Confirmación y recordatorio 24 h. Si solo pudieras mandar dos mensajes al día, manda estos dos. Cubren el grueso de la mejora.</p>
+
+    <div class="plantilla">
+      <div class="num">Plantilla 1</div>
+      <h3>Confirmación de cita</h3>
+      <p class="small muted"><strong>Cuándo:</strong> justo después de que reserve (o en menos de 5 minutos).</p>
+      <pre>Hola, {{nombre}} ✅
+
+Tu cita en {{nombre_del_salón}} está confirmada:
+
+📅 {{día_semana}}, {{fecha}}
+⏰ {{hora}}
+💇 Servicio: {{servicio}}
+💶 Precio: {{precio}}
+
+Si necesitas cambiarla, contéstame por aquí y lo vemos.
+Te escribiré mañana para recordártelo.
+— {{tu_nombre}}, {{nombre_del_salón}}</pre>
+      <p class="small"><strong>Por qué funciona:</strong> confirma la cita por escrito, deja claro el precio (así no hay sorpresas) y abre la puerta a cambios sin tener que llamar.</p>
+    </div>
+
+    <div class="plantilla">
+      <div class="num">Plantilla 2</div>
+      <h3>Recordatorio 24 horas antes</h3>
+      <p class="small muted"><strong>Cuándo:</strong> el día anterior a las 19:00 (cuando la gente ya está pensando en el día siguiente).</p>
+      <pre>Hola, {{nombre}} 👋
+
+Mañana te esperamos a las {{hora}} en {{nombre_del_salón}}
+para {{servicio}}.
+
+Si vienes en coche, tienes parking gratis en {{dirección_o_dato}}.
+
+¿Confirmas que vienes? Responde SÍ o NO y listo.
+— {{tu_nombre}}</pre>
+      <p class="small"><strong>Por qué funciona:</strong> una pregunta cerrada (SÍ/NO) es 5 veces más fácil de contestar que un <em>"¿vienes?"</em>. Y si dicen NO, tienes tiempo de llenar ese hueco.</p>
+    </div>
+  </div>
+  <div class="page-footer">
+    <div class="url">kairikos.com/kit</div>
+    <div>El kit del salón automatizado · Kairikos 2026</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 5 · PLANTILLAS 3, 4, 5
+     ============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <div class="brand"><span class="brand-mark"></span>Kairikos · Kit del salón automatizado</div>
+    <div>Plantillas 3–5</div>
+  </div>
+  <div class="pad section-open">
+    <div class="kicker">Página 5 · Las 5 plantillas (2 de 2)</div>
+    <hr class="rule-short" />
+    <h1 class="section">Pedir reseñas, reactivar lo dormido y recuperar lo perdido</h1>
+    <p class="lede">Las plantillas 3, 4 y 5 suben el listón. Más baratas que cualquier campaña de captación: hablan con clientas que ya confían en ti.</p>
+
+    <div class="plantilla">
+      <div class="num">Plantilla 3</div>
+      <h3>Seguimiento post-visita (pedir reseña)</h3>
+      <p class="small muted"><strong>Cuándo:</strong> 2-3 horas después de la visita, cuando la clienta está contenta con el resultado en el espejo.</p>
+      <pre>Hola, {{nombre}} 😊
+
+Gracias por venir hoy a {{nombre_del_salón}}.
+Si te ha gustado el resultado, me ayudas mucho
+con una reseña de 2 líneas en Google:
+
+👉 {{enlace_a_google_reviews}}
+
+Son 30 segundos y me ayuda un montón.
+¡Hasta la próxima!
+— {{tu_nombre}}</pre>
+      <p class="small"><strong>Por qué funciona:</strong> pides la reseña justo en el pico de satisfacción, y la pides corta (2 líneas). Las clientas que ya están contentas necesitan muy poco empujón.</p>
+    </div>
+
+    <div class="plantilla">
+      <div class="num">Plantilla 4</div>
+      <h3>Reactivación de cliente dormido (60+ días)</h3>
+      <p class="small muted"><strong>Cuándo:</strong> cuando ves en tu agenda que hace más de 60 días que no viene. Una vez por semana, máximo, para no parecer pesada.</p>
+      <pre>Hola, {{nombre}}, ¿qué tal? 🙂
+
+Vi que hace tiempo que no vienes por
+{{nombre_del_salón}} y quería escribirte.
+
+Esta semana tenemos hueco el {{día_concreto}}
+por la {{mañana_o_tarde}}. ¿Te paso cita?
+
+Si no te viene bien, dime cuándo te viene mejor
+y te guardo el sitio.
+— {{tu_nombre}}</pre>
+      <p class="small"><strong>Por qué funciona:</strong> ofrece un día y una franja concreta, no <em>"cuando quieras"</em>. Cuanto más concreto el ofrecimiento, más fácil es decir sí.</p>
+    </div>
+
+    <div class="plantilla">
+      <div class="num">Plantilla 5</div>
+      <h3>Respuesta a no-show (recuperar al cliente perdido)</h3>
+      <p class="small muted"><strong>Cuándo:</strong> 24 horas después de una cita a la que no vino y no avisó. Tono cero dramático, cero culpa.</p>
+      <pre>Hola, {{nombre}}. Hoy te esperábamos a las {{hora}}
+y no pudimos verte.
+
+No pasa nada, a todos nos surge algo.
+¿Te paso nueva cita? Tengo hueco el {{día}}
+a las {{hora}}. Si te viene mejor otro día, dime.
+— {{tu_nombre}}</pre>
+      <p class="small"><strong>Por qué funciona:</strong> no culpabiliza, no regaña, ofrece solución. 6 de cada 10 clientas a las que tratamos así vuelven a pedir cita en menos de 7 días.</p>
+    </div>
+  </div>
+  <div class="page-footer">
+    <div class="url">kairikos.com/kit</div>
+    <div>El kit del salón automatizado · Kairikos 2026</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 6 · GUIÓN DEL BOT
+     ============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <div class="brand"><span class="brand-mark"></span>Kairikos · Kit del salón automatizado</div>
+    <div>Bot de recepción</div>
+  </div>
+  <div class="pad section-open">
+    <div class="kicker">Página 6 · El guión del bot</div>
+    <hr class="rule-short" />
+    <h1 class="section">WhatsApp 24/7 sin contestar a mano</h1>
+    <p class="lede">Esto es lo que tienes que configurar para que WhatsApp conteste por ti fuera de horario o cuando estés con una clienta. Está escrito en lenguaje de peluquería, no de programador.</p>
+
+    <div class="flow-step">
+      <div class="step-num">1</div>
+      <div>
+        <h4>Paso 1 · Saludo</h4>
+        <pre>Hola, soy el bot de {{nombre_del_salón}} 🤖
+¿En qué puedo ayudarte?
+
+1️⃣ Reservar cita
+2️⃣ Ver precios y servicios
+3️⃣ Hablar con {{tu_nombre}}</pre>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num">2</div>
+      <div>
+        <h4>Paso 2 · Si escribe "1" o "reservar"</h4>
+        <pre>Perfecto. Para reservar necesito:
+
+📅 ¿Qué día te viene bien? (lun, mar, mié…)
+⏰ ¿Mañana o tarde?
+💇 ¿Qué servicio quieres? (corte, tinte, peinado…)
+
+En cuanto me lo digas, te confirmo hueco.</pre>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num">3</div>
+      <div>
+        <h4>Paso 3 · Cuando responde día, hora y servicio</h4>
+        <pre>Genial. Tengo hueco el {{día}} a las {{hora}}
+para {{servicio}}.
+
+¿Cómo te llamas y tu teléfono?
+Te envío la confirmación en un minuto.</pre>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num">4</div>
+      <div>
+        <h4>Paso 4 · Cuando confirma nombre y teléfono</h4>
+        <pre>✅ Listo, {{nombre}}. Tu cita está reservada:
+
+📅 {{día}}, {{hora}}
+💇 {{servicio}}
+📍 {{dirección}}
+
+Mañana te recuerdo la cita. ¡Gracias!</pre>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="step-num">5</div>
+      <div>
+        <h4>Paso 5 · Si escribe "3" o pide hablar contigo</h4>
+        <pre>Claro, ahora aviso a {{tu_nombre}}.
+Normalmente responde en menos de 1 hora
+(en horario de salón).
+
+Mientras tanto, ¿puedes contarme en una línea
+qué necesitas? Así lo tiene todo a mano.</pre>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <div class="url">kairikos.com/kit</div>
+    <div>El kit del salón automatizado · Kairikos 2026</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 7 · CALCULADORA
+     ============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <div class="brand"><span class="brand-mark"></span>Kairikos · Kit del salón automatizado</div>
+    <div>Calculadora</div>
+  </div>
+  <div class="pad section-open">
+    <div class="kicker">Página 7 · Calculadora de pérdida</div>
+    <hr class="rule-short" />
+    <h1 class="section">¿Cuánto te están costando las citas vacías?</h1>
+    <p class="lede">Solo necesitas 3 números. La cifra que te salga es dinero que ya tienes pero que se te escapa. No es teoría, son tus huecos vacíos.</p>
+
+    <h3>La fórmula</h3>
+    <div class="hl">
+      <p style="margin:0; font-family:'Instrument Serif',Georgia,serif; font-style:italic; font-size:12pt; line-height:1.45; text-align:center;">
+        Pérdida anual = ticket medio (€) × nº citas/semana × tasa de no-show × 48 semanas
+      </p>
+    </div>
+
+    <h3>Dónde conseguir los números</h3>
+    <ul>
+      <li><strong>Ticket medio:</strong> lo que paga de media una clienta por visita. Si no lo sabes, mira los tiques de la última semana y divide el total entre el número de visitas.</li>
+      <li><strong>Nº citas/semana:</strong> las citas que tienes reservadas, no las que se hacen. Una agenda llena de 40 huecos con 6 no-shows a la semana te hace perder más que una de 20 sin no-shows.</li>
+      <li><strong>Tasa de no-show:</strong> los no-shows del último mes ÷ citas totales del mes. Un 10 % es habitual. Un 20 % es alarmante.</li>
+    </ul>
+
+    <h3>Tres ejemplos reales de salones españoles</h3>
+    <table>
+      <thead>
+        <tr><th>Tipo de salón</th><th class="num">Ticket</th><th class="num">Citas/sem</th><th class="num">No-show</th><th class="num">Pérdida anual</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Peluquería de barrio, 1 dueña</td><td class="num">28 €</td><td class="num">30</td><td class="num">15 %</td><td class="num"><span class="num-pill">6.048 €</span></td></tr>
+        <tr><td>Salón medio, 2-3 profesionales</td><td class="num">55 €</td><td class="num">60</td><td class="num">18 %</td><td class="num"><span class="num-pill">28.512 €</span></td></tr>
+        <tr><td>Estética avanzada (tratamientos largos)</td><td class="num">95 €</td><td class="num">25</td><td class="num">12 %</td><td class="num"><span class="num-pill">13.680 €</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Cómo bajar la tasa de no-shows en 30 días</h3>
+    <ol>
+      <li>Activa la <strong>plantilla 2</strong> (recordatorio 24 h) mañana mismo. Sola baja los no-shows entre 25 % y 35 %.</li>
+      <li>Súmale la <strong>plantilla 5</strong> (recuperar no-show) una semana después. Recuperas 6 de cada 10.</li>
+      <li>Si llegas a las dos semanas y el ritmo baja, monta el <strong>bot de recepción</strong> (página 6). Es el tercer nivel.</li>
+    </ol>
+  </div>
+  <div class="page-footer">
+    <div class="url">kairikos.com/kit</div>
+    <div>El kit del salón automatizado · Kairikos 2026</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE 8 · CIERRE + CTA
+     ============================================================ -->
+<section class="page">
+  <div class="page-header">
+    <div class="brand"><span class="brand-mark"></span>Kairikos · Kit del salón automatizado</div>
+    <div>Cierre</div>
+  </div>
+  <div class="pad section-open">
+    <div class="kicker">Página 8 · Cierre</div>
+    <hr class="rule-short" />
+    <h1 class="section">Has leído 12 minutos. Ya tienes el kit.</h1>
+    <p class="lede">5 plantillas de WhatsApp listas para copiar y pegar. Un guión de bot de recepción paso a paso. Una calculadora con tu número real de dinero que se te escapa.</p>
+
+    <h3>Lo que ya puedes hacer hoy</h3>
+    <ul>
+      <li>Activar la <strong>plantilla 2</strong> mañana mismo y empezar a medir la tasa de no-shows.</li>
+      <li>Pasar tu ticket medio y citas/semana por la <strong>calculadora</strong> y tener tu cifra real.</li>
+      <li>Decidir si quieres montarlo tú con WhatsApp Business o si prefieres que te lo dejemos hecho.</li>
+    </ul>
+
+    <h3>Si quieres, deja de hacerlo todo a mano</h3>
+    <p>En Kairikos montamos todo esto en salones como el tuyo en menos de una semana. Nos conectamos a tu agenda, escribimos los mensajes con tu tono, y tú solo ves cómo WhatsApp se contesta solo y tu agenda se llena.</p>
+
+    <h3>Qué pasa en la demo de 20 minutos</h3>
+    <div class="grid-3" style="margin-top:2mm;">
+      <div class="hl" style="margin:0;">
+        <div class="kicker" style="margin-bottom:1.5mm;">1 · Vemos tus números</div>
+        <p class="small" style="margin:0;">Tu agenda real y tus cifras de no-shows. Salimos con un número concreto.</p>
+      </div>
+      <div class="hl" style="margin:0;">
+        <div class="kicker" style="margin-bottom:1.5mm;">2 · Te enseñamos cómo queda</div>
+        <p class="small" style="margin:0;">Tu WhatsApp con el bot configurado y los mensajes en tu tono, antes de tocar nada.</p>
+      </div>
+      <div class="hl" style="margin:0;">
+        <div class="kicker" style="margin-bottom:1.5mm;">3 · Decides sin compromiso</div>
+        <p class="small" style="margin:0;">Si encaja, propuesta en 24 h. Si no, te decimos por qué y nos vamos.</p>
+      </div>
+    </div>
+
+    <div class="cta-card">
+      <div class="kicker">CTA principal</div>
+      <h3>Reserva tu demo gratuita de 20 minutos</h3>
+      <p>20 minutos para ver tu agenda, calcular lo que te están costando las citas vacías y enseñarte cómo quedaría tu WhatsApp automatizado.</p>
+      <a class="cta" href="https://kairikos.com/demo">kairikos.com/demo</a>
+      <div class="secondary">Si prefieres, escríbenos a hola@kairikos.com o al WhatsApp del equipo. Contestamos siempre en menos de 1 hora en horario de salón.</div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <div class="url">kairikos.com/kit</div>
+    <div>El kit del salón automatizado · Kairikos 2026</div>
+  </div>
+</section>
+
+</body>
+</html>
